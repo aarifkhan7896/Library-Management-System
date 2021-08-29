@@ -1,8 +1,16 @@
 <?php
 include '../partials/dbcon.php';
 $id = $_GET['id'];
+
+$showquery = "SELECT * FROM `books` WHERE `id` = $id";
+
+$showdata = mysqli_query($dbcon, $showquery);
+$arrdata = mysqli_fetch_array($showdata);
+
 if($_SERVER['REQUEST_METHOD']=="POST"){
 
+    $idb = $_GET['id'];
+    
     $bookid = $_POST['book_id'];
     $bookname = $_POST['book_name'];
     $category = $_POST['book_category'];
@@ -11,15 +19,14 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $price = $_POST['book_price'];
    
     $sql = "UPDATE `books` SET `book_id` = '$bookid', `book_name` = '$bookname', `book_category` = '$category', 
-    `book_author` = '$author', `book_isbn` = '$isbn', `book_price` = '$price' WHERE `books`.`id` = '$id'";
+    `book_author` = '$author', `book_isbn` = '$isbn', `book_price` = '$price' WHERE `books`.`id` = $idb";
     $result = mysqli_query($dbcon, $sql);
     if($result){
-        // mysqli_close($dbcon);
-        // header("location: registeredusers.php");
-        // exit();
-    }else{
-        echo "error->".mysqli_error($dbcon);
+        mysqli_close($dbcon);
+        header("location: managebooks.php");
+        exit();
     }
+    
 }
 
 
@@ -50,30 +57,36 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         <h1>Edit Book Details</h1>
     </div>
     <div class="container">
-        <form action="editbooks.php" method="post">
+        <form action="editbooks.php?id=<?php echo $id; ?>" method="post">
             <div class="mb-3">
                 <label for="book_id" class="form-label">Book ID</label>
-                <input type="text" class="form-control" id="book_id" name="book_id" required>
+                <input type="text" class="form-control" id="book_id" name="book_id" value="<?php echo
+                $arrdata['book_id']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="book_name" class="form-label">Book Name</label>
-                <input type="text" class="form-control" id="book_name" name="book_name" required>
+                <input type="text" class="form-control" id="book_name" name="book_name" value="<?php echo
+                $arrdata['book_name']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="book_category" class="form-label">Book Category</label>
-                <input type="text" class="form-control" id="book_category" name="book_category" required>
+                <input type="text" class="form-control" id="book_category" name="book_category" value="<?php echo
+                $arrdata['book_category']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="book_author" class="form-label">Book Author</label>
-                <input type="text" class="form-control" id="book_author" name="book_author" required>
+                <input type="text" class="form-control" id="book_author" name="book_author" value="<?php echo
+                $arrdata['book_author']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="book_isbn" class="form-label">Book ISBN</label>
-                <input type="text" class="form-control" id="book_isbn" name="book_isbn" required>
+                <input type="text" class="form-control" id="book_isbn" name="book_isbn" value="<?php echo
+                $arrdata['book_isbn']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="book_price" class="form-label">Book Price</label>
-                <input type="text" class="form-control" id="book_price" name="book_price" required>
+                <input type="text" class="form-control" id="book_price" name="book_price" value="<?php echo
+                $arrdata['book_price']; ?>" required>
             </div>
             <button type="submit" class="btn btn-primary formbtn">Submit</button>
         </form>

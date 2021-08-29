@@ -87,11 +87,6 @@
 
             $sql = "INSERT INTO `books` (`book_id`, `book_name`, `book_category`, `book_author`, `book_isbn`, `book_price`) VALUES ('$bookid', '$bookname', '$category', '$author', '$isbn', '$price')";
             $result = mysqli_query($dbcon, $sql);
-            if($result){
-                mysqli_close($dbcon);
-                header("location: managebooks.php");
-                exit();
-            }
         }
     ?>
 
