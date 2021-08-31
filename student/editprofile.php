@@ -1,33 +1,28 @@
-<?php include '../partials/dbcon.php'; ?>
 <?php
+include '../partials/dbcon.php'; 
 $id = $_GET['id'];
-$sql = "SELECT * FROM `student` WHERE student_id = '$id'";
-$result = mysqli_query($dbcon, $sql);
-while($row = mysqli_fetch_assoc($result)){
-    $id = $row['student_id'];
-}
-?>
-
-<?php
+$sql1 = "SELECT * FROM `student` WHERE `student_id` = $id";
+$result1 = mysqli_query($dbcon, $sql1);
+$fetch = mysqli_fetch_array($result1);
 
 
 if($_SERVER['REQUEST_METHOD']=="POST"){
     
-    include '../partials/dbcon.php';
+    $eid = $_GET['id'];
     
     $editid = $_POST['editid'];
     $editname = $_POST['editname'];
     $editclass = $_POST['editclass'];
     $editsection = $_POST['editsection'];
-    $editemail = $_POST['editsection'];
+    $editemail = $_POST['editemail'];
     
-    $sql = "UPDATE `student` SET `student_id` = '$editid', `name` = '$editname', `class` = '$editclass', `section` = '$editsection', `email` = '$editemail' WHERE `student`.`id` = '$id'";
+    $sql = "UPDATE `student` SET `name` = '$editname', `class` = '$editclass', `section` = '$editsection', `email` = '$editemail' WHERE `student_id` = $eid";
     $result = mysqli_query($dbcon, $sql);
     if($result){
-        echo "success";
-    }else{
-        echo "failed->".mysqli_error($dbcon);
-    }
+        mysqli_close($dbcon);
+        header("location: studentdashboard.php");
+        exit();
+}
 }
 
 ?>
@@ -51,26 +46,31 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         <h1>Edit Profile</h1>
     </div>
     <div class="container" id="editprofile">
-        <form action="editprofile.php" method="post">
+        <form action="editprofile.php?id=<?php echo $id;?>" method="post">
             <div class="mb-3">
                 <label for="editid" class="form-label">Student ID</label>
-                <input type="text" class="form-control" id="editid" name="editid">
+                <input type="text" class="form-control" id="editid" name="editid"
+                    value="<?php echo $fetch['student_id'];?>">
             </div>
             <div class="mb-3">
                 <label for="editname" class="form-label">Name</label>
-                <input type="text" class="form-control" id="editname" name="editname">
+                <input type="text" class="form-control" id="editname" name="editname"
+                    value="<?php echo $fetch['name'];?>">
             </div>
             <div class="mb-3">
                 <label for="editclass" class="form-label">Class</label>
-                <input type="text" class="form-control" id="editclass" name="editclass">
+                <input type="text" class="form-control" id="editclass" name="editclass"
+                    value="<?php echo $fetch['class'];?>">
             </div>
             <div class="mb-3">
                 <label for="editsection" class="form-label">Section</label>
-                <input type="text" class="form-control" id="editsection" name="editsection">
+                <input type="text" class="form-control" id="editsection" name="editsection"
+                    value="<?php echo $fetch['section'];?>">
             </div>
             <div class="mb-3">
                 <label for="editemail" class="form-label">Email</label>
-                <input type="email" class="form-control" id="editemail">
+                <input type="email" class="form-control" id="editemail" name="editemail"
+                    value="<?php echo $fetch['email'];?>">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

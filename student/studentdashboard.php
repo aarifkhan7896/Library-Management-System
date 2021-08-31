@@ -1,19 +1,15 @@
-<?php include '../partials/dbcon.php'; ?>
-
 <?php
+
+include '../partials/dbcon.php'; 
 if($_SERVER['REQUEST_METHOD']=="POST"){
+    $gid = $_GET['id'];
     $newpassword = $_POST['newpassword'];
     $confirmpassword = $_POST['confirmpassword'];
 
     if($newpassword==$confirmpassword){
         $hash = password_hash($newpassword, PASSWORD_DEFAULT);
-        $sql = "UPDATE `student` SET `password` = '$hash' WHERE `student`.`id` = 2";
+        $sql = "UPDATE `student` SET `password` = '$hash' WHERE `student`.`student_id` = $gid";
         $result = mysqli_query($dbcon, $sql);
-        if($result){
-            echo "yes";
-        }else{
-            echo "error->".mysqli_error($dbcon);
-        }
     }
 }
 ?>
@@ -32,6 +28,33 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 </head>
 
 <body>
+
+
+    <?php require '../partials/header.php'; ?>
+    <div class=" container" id="studentdashboard">
+        <div class="left">
+            <h1>Student Dashboard</h1>
+        </div>
+        <div id="studentpanel">
+            <ul>
+                <?php
+                $sql = "SELECT * FROM `student`";
+                $result = mysqli_query($dbcon, $sql);
+                while($row = mysqli_fetch_assoc($result)){
+
+                    $ifd = $row['student_id'];
+                }
+                echo "<li><a href='editprofile.php?id=".$ifd."'>Edit Profile</a></li>
+                <li><a href='viewissuedbooks.php?id=".$ifd."'>View issued books</a></li>
+                <li><a href='?id=".$ifd."' data-bs-toggle='modal' data-bs-target='#modal'>Change Password</a>
+                </li>
+                <li><a href='logout.php'>Logout</a></li>";
+
+                ?>
+            </ul>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -41,7 +64,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="studentdashboard.php" method="post">
+                    <form action="studentdashboard.php?id=<?php echo $ifd;?>" method="post">
                         <div class="mb-3">
                             <label for="password" class="form-label">New Password</label>
                             <input type="password" class="form-control" id="password" name="newpassword">
@@ -54,30 +77,6 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <?php require '../partials/header.php'; ?>
-    <div class="container" id="studentdashboard">
-        <div class="left">
-            <h1>Student Dashboard</h1>
-        </div>
-        <div id="studentpanel">
-            <ul>
-                <?php
-                $sql = "SELECT * FROM `student`";
-                $result = mysqli_query($dbcon, $sql);
-                while($row = mysqli_fetch_assoc($result)){
-
-                    $id = $row['student_id'];
-                }
-                echo "<li><a href='editprofile.php?id=".$id."'>Edit Profile</a></li>
-                <li><a href='viewissuedbooks.php?id=".$id."'>View issued books</a></li>
-                <li><a href='#' data-bs-toggle='modal' data-bs-target='#modal'>Change Password</a>
-                </li>";
-
-                ?>
-            </ul>
         </div>
     </div>
 
@@ -95,8 +94,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
             </thead>
             <tbody>
                 <?php
-                    $id = $_GET['id'];
-                    $sql = "SELECT * FROM `student` WHERE student_id = '$id' ";
+                    $sql = "SELECT * FROM `student` WHERE `student_id`= $ifd";
                     $result = mysqli_query($dbcon, $sql);
                     $sno = 0;
                     while($row=mysqli_fetch_assoc($result)){

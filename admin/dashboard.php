@@ -1,3 +1,10 @@
+<?php 
+session_start();
+if(!isset($_SESSION['loggedin']) && $_SESSION['loggedin']!=true){
+header("location: index.php");
+exit;
+}
+?>
 <?php
     $update = false;
         if($_SERVER['REQUEST_METHOD']=="POST"){
@@ -34,6 +41,7 @@
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="../index.php">Register Student</a></li>
             <li><a href="#" data-bs-toggle="modal" data-bs-target="#modal">Change Password</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
     <div id="admindash">

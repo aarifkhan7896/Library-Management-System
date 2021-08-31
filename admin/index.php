@@ -4,7 +4,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $adminusername = $_POST['adminusername'];
     $adminpassword = $_POST['adminpassword'];
 
-    $sql = "SELECT * FROM `admin_login` WHERE `password` = '$adminpassword' ";
+    $sql = "SELECT * FROM `admin_login` WHERE `username` = '$adminusername' AND `password` = '$adminpassword' ";
     $result = mysqli_query($dbcon, $sql);
     $num = mysqli_num_rows($result);
     if($num==1){

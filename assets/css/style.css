@@ -254,6 +254,7 @@ input[type="password"] {
   align-items: center;
   justify-content: center;
   margin: 5rem auto;
+  margin-bottom: 19rem;
 }
 #admincard .card {
   width: 30rem;
@@ -291,6 +292,7 @@ input[type="password"] {
   box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.7);
   padding: 4rem;
   border-radius: 1rem;
+  margin-bottom: 18rem;
 }
 #addcategory {
   margin-bottom: 3rem;
