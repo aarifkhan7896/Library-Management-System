@@ -4,7 +4,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $studentid = $_POST['studentid'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM `student` WHERE student_id = '$studentid'";
+    $sql = "SELECT * FROM `student` WHERE `student_id` = '$studentid' AND `password` = '$password' ";
     $result = mysqli_query($dbcon, $sql);
     $num = mysqli_num_rows($result);
     if($num==1){

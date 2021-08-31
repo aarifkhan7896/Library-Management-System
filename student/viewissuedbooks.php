@@ -13,13 +13,7 @@
 </head>
 
 <body>
-    <div id="admindashboard">
-        <ul>
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="../index.php">Register Student</a></li>
-            <li><a href="#" data-bs-toggle="modal" data-bs-target="#modal">Change Password</a></li>
-        </ul>
-    </div>
+    <?php require '../partials/header.php'; ?>
     <div id="admindash">
         <h1>Issued Books</h1>
     </div>
